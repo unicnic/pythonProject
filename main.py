@@ -42,23 +42,3 @@ class Reviewer(Mentor):
             return 'Ошибка'
 
 
-best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.courses_in_progress += ['Python']
-bad_student = Student('Вася', 'Пупкин', 'm')
-bad_student.courses_in_progress += ['Python']
-
-cool_reviewer = Reviewer('Some', 'Buddy')
-cool_reviewer.courses_attached += ['Python']
-
-lecturer = Lecturer('Oleg', 'Bulygin', 'm')
-lecturer.courses += ['Python']
-
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-
-best_student.rate_lecturer(lecturer, 'Python', 10)
-bad_student.rate_lecturer(lecturer, 'Python', 2)
-
-print(best_student.grades)
-print(lecturer.grades)
