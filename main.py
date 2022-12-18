@@ -15,6 +15,29 @@ class Student:
         else:
             return 'Ошибка'
 
+    def __avg_grade(self):
+        sum_grade = 0
+        count_grade = 0
+        if len(self.grades) != 0:
+            for i, j in self.grades.items():
+                sum_grade += sum(j)
+                count_grade += len(j)
+            avg_grade = round(sum_grade / count_grade, 1)
+        else:
+            avg_grade = 0
+        return avg_grade
+    def __str__(self):
+        str_courses_in_progress = ', '.join(self.courses_in_progress)
+        str_finished_courses = ', '.join(self.finished_courses)
+        res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за домашние задания: {self.__avg_grade()}\nКурсы в процессе изучения: {str_courses_in_progress}\nЗавершенные курсы: {str_finished_courses}'
+        return res
+
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            print(f'{other} не студент')
+            return
+        return self.__avg_grade() < other.__avg_grade()
+
 
 class Mentor:
     def __init__(self, name, surname):
@@ -31,6 +54,29 @@ class Lecturer(Mentor):
         self.gender = gender
         self.courses = []
         self.grades = {}
+
+    def __avg_grade(self):
+        sum_grade = 0
+        count_grade = 0
+        if len(self.grades) != 0:
+            for i, j in self.grades.items():
+                sum_grade += sum(j)
+                count_grade += len(j)
+            avg_grade = round(sum_grade / count_grade, 1)
+        else:
+            avg_grade = 0
+        return avg_grade
+
+    def __str__(self):
+        res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self.__avg_grade()}'
+        return res
+
+    def __lt__(self, other):
+        if not isinstance(other, Lecturer):
+            print(f'{other} не лектор')
+            return
+        return self.__avg_grade() < other.__avg_grade()
+
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
         if isinstance(student, Student) and course in self.courses_attached and course in student.courses_in_progress:
@@ -41,24 +87,9 @@ class Reviewer(Mentor):
         else:
             return 'Ошибка'
 
+    def __str__(self):
+        res = f'Имя: {self.name}\nФамилия: {self.surname}'
+        return res
 
-best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.courses_in_progress += ['Python']
-bad_student = Student('Вася', 'Пупкин', 'm')
-bad_student.courses_in_progress += ['Python']
 
-cool_reviewer = Reviewer('Some', 'Buddy')
-cool_reviewer.courses_attached += ['Python']
 
-lecturer = Lecturer('Oleg', 'Bulygin', 'm')
-lecturer.courses += ['Python']
-
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-
-best_student.rate_lecturer(lecturer, 'Python', 10)
-bad_student.rate_lecturer(lecturer, 'Python', 2)
-
-print(best_student.grades)
-print(lecturer.grades)
